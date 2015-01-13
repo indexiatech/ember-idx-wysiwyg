@@ -8,6 +8,6 @@ import Em from 'ember';
 
 export default Em.Component.extend({
   registerInParent: (function() {
-    this.set('parentView.model', this)
+    this.set('parentView.model', this);
   }).on('didInsertElement')
 });
