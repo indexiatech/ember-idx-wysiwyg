@@ -2,11 +2,12 @@ import Em from 'ember';
 import StyleBindingsMixin from 'ember-idx-utils/mixin/style-bindings';
 
 export default Em.Component.extend(StyleBindingsMixin, {
-  styleBindings: ['marginTop:margin-top', 'background'],
+  styleBindings: ['marginTop:margin-top', 'background', 'display'],
   attributeBindings: ['contenteditable'],
   contenteditable: 'true',
   marginTop: 10,
   background: 'white',
+  display: 'block',
   wysiwyg: Em.computed.alias('parentView'),
   updateToolbar: function(e) {
     return this.get('wysiwyg').trigger('update_actions');
