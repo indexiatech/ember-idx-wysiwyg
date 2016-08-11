@@ -1,6 +1,6 @@
-import Em from 'ember';
+import Ember from 'ember';
 import WithConfigMixin from 'ember-idx-utils/mixin/with-config';
-var computed = Em.computed;
+var computed = Ember.computed;
 
 /**
  * ActionGroup component
@@ -8,7 +8,7 @@ var computed = Em.computed;
  * @class ActionGroup
  */
 
-export default Em.Component.extend(WithConfigMixin, {
+export default Ember.Component.extend(WithConfigMixin, {
   classNameBindings: ['styleClasses'],
   styleClasses: (function() {
     var _ref;

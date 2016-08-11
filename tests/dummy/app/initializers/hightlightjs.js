@@ -1,12 +1,14 @@
 import Em from 'ember';
-import Config from 'ember-idx-utils/config';
+import UtilsConfig from 'ember-idx-utils/config';
 /*global hljs*/
+
+var Config;
 
 export default {
   name: 'hightlightjs',
   initialize: function() {
     //In real app we don't need this coz the initializer of modal will be merged into the app and will run automatically
-    Em.Config = Config = Config.create();
+    Em.Config = Config = UtilsConfig.create();
     var defaultConfig = Config.getConfig('bs');
 
     if (!defaultConfig) {

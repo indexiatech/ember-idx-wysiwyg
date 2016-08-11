@@ -1,8 +1,8 @@
-import Em from 'ember';
-var computed = Em.computed;
+import Ember from 'ember';
+var computed = Ember.computed;
 import StyleBindingsMixin from 'ember-idx-utils/mixin/style-bindings';
 
-export default Em.TextArea.extend(StyleBindingsMixin, {
+export default Ember.TextArea.extend(StyleBindingsMixin, {
     styleBindings: ['display', 'width', 'border'],
     width: '100%',
     border: 'none;',

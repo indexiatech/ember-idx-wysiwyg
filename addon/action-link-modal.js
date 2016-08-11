@@ -1,4 +1,9 @@
-import Em from 'ember';
+import Ember from 'ember';
+
+const {
+  on,
+  Component
+} = Ember;
 
 /**
  * ActionGroup component
@@ -6,8 +11,8 @@ import Em from 'ember';
  * @class ActionGroup
  */
 
-export default Em.Component.extend({
-  registerInParent: (function() {
+export default Component.extend({
+  registerInParent: on('didInsertElement', function() {
     this.set('parentView.model', this);
-  }).on('didInsertElement')
+  })
 });

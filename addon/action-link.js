@@ -1,26 +1,29 @@
-import Em from 'ember';
+import Ember from 'ember';
 import WithConfigMixin from 'ember-idx-utils/mixin/with-config';
 import Modal from 'ember-idx-modal/modal';
-var computed = Em.computed;
+var computed = Ember.computed;
+var COMPONENT_NAME = 'view:em-wysiwyg-action-link-modal';
 
-export default Em.Component.extend(WithConfigMixin, {
+export default Ember.Component.extend(WithConfigMixin, {
   tagName: 'a',
   classNameBindings: ['styleClasses', 'activeClasses'],
   linkHref: '',
   initModal: (function() {
     var container = this.get('container');
-    container.register('view:em-wysiwyg-action-link-modal', Modal.extend({
-      layoutName: 'components/em-wysiwyg-action-link-modal',
-      configName: 'bs',
-      _parentView: this,
-      linkHref: computed.alias('parentView.linkHref'),
-      actions: {
-        addLink: function() {
-          this.get('parentView').send('addLink');
+    if(!container.lookupFactory(COMPONENT_NAME)) {
+      container._registry.register(COMPONENT_NAME, Modal.extend({
+        layoutName: 'components/em-wysiwyg-action-link-modal',
+        configName: 'bs',
+        _parentView: this,
+        linkHref: computed.alias('parentView.linkHref'),
+        actions: {
+          addLink: function() {
+            this.get('parentView').send('addLink');
+          }
         }
-      }
-    }));
-    this.set('modal', container.lookup('view:em-wysiwyg-action-link-modal'));
+      }));
+    }
+    this.set('modal', container.lookup(COMPONENT_NAME));
     return this.get('modal').append();
   }).on('init'),
   styleClasses: (function() {
@@ -61,7 +64,7 @@ export default Em.Component.extend(WithConfigMixin, {
           container = container.parentNode;
         }
         if (container.nodeName === "A") {
-          _this.set('linkHref', Em.$(container).attr('href'));
+          _this.set('linkHref', Ember.$(container).attr('href'));
           return _this.set('active', true);
         } else {
           _this.set('linkHref', '');

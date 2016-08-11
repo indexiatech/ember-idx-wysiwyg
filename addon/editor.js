@@ -1,14 +1,14 @@
-import Em from 'ember';
+import Ember from 'ember';
 import StyleBindingsMixin from 'ember-idx-utils/mixin/style-bindings';
 
-export default Em.Component.extend(StyleBindingsMixin, {
+export default Ember.Component.extend(StyleBindingsMixin, {
   styleBindings: ['marginTop:margin-top', 'background', 'display'],
   attributeBindings: ['contenteditable'],
   contenteditable: 'true',
   marginTop: 10,
   background: 'white',
   display: 'block',
-  wysiwyg: Em.computed.alias('parentView'),
+  wysiwyg: Ember.computed.alias('parentView'),
   updateToolbar: function(e) {
     return this.get('wysiwyg').trigger('update_actions');
   },
@@ -37,6 +37,12 @@ export default Em.Component.extend(StyleBindingsMixin, {
   restoreSelection: function() {
     var e, selection;
     selection = window.getSelection();
+    var selectionStr = selection.toString();
+    var contentStr = this.$().text();
+    if(selectionStr === contentStr) {
+      return selection;
+    }
+
     if (this.get('selectionRange')) {
       try {
         selection.removeAllRanges();
@@ -55,10 +61,10 @@ export default Em.Component.extend(StyleBindingsMixin, {
     }
     return this.saveSelection();
   },
-  register: (function() {
+  register: Ember.on('didInsertElement', function() {
     return this.get('wysiwyg').setEditor(this);
-  }).on('didInsertElement'),
-  unregister: (function() {
+  }),
+  unregister: Ember.on('willDestroyElement', function() {
     return this.get('wysiwyg').setEditor(void 0);
-  }).on('willDestroyElement')
+  })
 });

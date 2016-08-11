@@ -1,4 +1,4 @@
-import Em from 'ember';
+import Ember from 'ember';
 import WithConfigMixin from 'ember-idx-utils/mixin/with-config';
 
 /**
@@ -7,12 +7,12 @@ import WithConfigMixin from 'ember-idx-utils/mixin/with-config';
  * @class Wysiwyg
  */
 
-export default Em.Component.extend(WithConfigMixin, {
+export default Ember.Component.extend(WithConfigMixin, {
   classNameBindings: ['styleClasses'],
-  styleClasses: (function() {
+  styleClasses: Ember.computed(function() {
     var _ref;
     return (_ref = this.get('config.wysiwyg.classes')) != null ? _ref.join(" ") : void 0;
-  }).property(),
+  }),
 
   /**
    * A list of {{#crossLink "Toolbar"}}toolbar{{/crossLink}} instances.
@@ -23,19 +23,19 @@ export default Em.Component.extend(WithConfigMixin, {
    * The editor view
    */
   editor: void 0,
-  initToolbars: (function() {
-    return this.set('toolbars', Em.ArrayProxy.create({
+  initToolbars: Ember.on('init', function() {
+    return this.set('toolbars', Ember.ArrayProxy.create({
       content: []
     }));
-  }).on('init'),
+  }),
 
-  initEditorContent: (function() {
+  initEditorContent: Ember.observer('editor', function() {
     if (this.get('editor')) {
-      return Em.run.once(this, (function() {
+      return Ember.run.once(this, (function() {
         return this.get('editor').$().html(this.get('as_html'));
       }));
     }
-  }).observes('editor'),
+  }),
 
   /**
    * Add the given `Toolbar` instance.
@@ -55,9 +55,13 @@ export default Em.Component.extend(WithConfigMixin, {
    * Set the editor instance
    */
   setEditor: function(editor) {
+    if (editor && editor.element) {
+      editor.element.addEventListener('paste', () => Ember.run.scheduleOnce('afterRender', this, this.asHtmlUpdater));
+    }
     return this.set('editor', editor);
   },
-  asHtmlUpdater: (function() {
+
+  asHtmlUpdater: Ember.on('update_actions', function() {
     return this.set('as_html', this.get('editor').$().html().replace(/(<br>|\s|<div><br><\/div>|&nbsp;)*$/, ''));
-  }).on('update_actions')
+  })
 });
