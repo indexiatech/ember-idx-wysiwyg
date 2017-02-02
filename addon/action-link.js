@@ -18,7 +18,7 @@ export default Ember.Component.extend(WithConfigMixin, {
         linkHref: computed.alias('parentView.linkHref'),
         actions: {
           addLink: function() {
-            this.get('parentView').send('addLink');
+            (this.get('parentView') || this.get('_parentView')).send('addLink');
           }
         }
       }));
