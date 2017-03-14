@@ -11,7 +11,7 @@ export default Ember.Component.extend(WithConfigMixin, {
   initModal: (function() {
     var container = this.get('container');
     if(!container.lookupFactory(COMPONENT_NAME)) {
-      container._registry.register(COMPONENT_NAME, Modal.extend({
+      (container.registry || container._registry).register(COMPONENT_NAME, Modal.extend({
         layoutName: 'components/em-wysiwyg-action-link-modal',
         configName: 'bs',
         parentView: this,
