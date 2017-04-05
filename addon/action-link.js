@@ -14,7 +14,6 @@ export default Ember.Component.extend(WithConfigMixin, {
       (container.registry || container._registry).register(COMPONENT_NAME, Modal.extend({
         layoutName: 'components/em-wysiwyg-action-link-modal',
         configName: 'bs',
-        parentView: this,
         linkHref: computed.alias('parentView.linkHref'),
         actions: {
           addLink: function() {
@@ -23,7 +22,9 @@ export default Ember.Component.extend(WithConfigMixin, {
         }
       }));
     }
-    this.set('modal', container.lookup(COMPONENT_NAME));
+    var modal = container.lookup(COMPONENT_NAME);
+    modal.set('parentView', this);
+    this.set('modal', modal);
     return this.get('modal').append();
   }).on('init'),
   styleClasses: (function() {
